@@ -1,0 +1,73 @@
+---
+import eventsData from "../data/events.json";
+export interface Props {
+  source?: "all" | "favorites";
+  color?: string;
+  colorHover?: string;
+}
+
+const { source = "all", color = "red-700", colorHover = "red-800" } = Astro.props;
+---
+
+<section class="mb-12 select-none">
+  <div
+    x-data={`{
+      events: ${JSON.stringify(eventsData)},
+      source: '${source}',
+      sortBy: 'start_datetime',
+      get visible() {
+        const hideEndedBefore = Date.now() - 3600000; // cache les events terminés depuis +1h
+        const favoriteIds = Alpine.store('favorites').ids;
+        return this.events
+          .filter((e) => new Date(e.end_datetime).getTime() >= hideEndedBefore)
+          .filter((e) => this.source !== 'favorites' || favoriteIds.includes(e.id))
+          .sort((a, b) => {
+            if (this.sortBy === 'organisateur') return a.organisateur.localeCompare(b.organisateur);
+            return new Date(a.start_datetime) - new Date(b.start_datetime);
+          });
+      }
+    }`}
+  >
+    <div class="flex flex-col space-y-4 ml-2">
+      <div class="flex gap-2 m-2">
+        <button
+          @click="sortBy = 'start_datetime'"
+          class={`px-2 py-1 transition-colors rounded bg-${color} hover:bg-${colorHover}`}
+        >
+          <p class="text-sm">Sort by date</p>
+        </button>
+        <button
+          @click="sortBy = 'organisateur'"
+          class={`px-2 py-1 transition-colors rounded bg-${color} hover:bg-${colorHover}`}
+        >
+          <p class="text-sm">Sort by organiser</p>
+        </button>
+      </div>
+    </div>
+    <div class="flex justify-center">
+      <div class="w-full max-w-4xl overflow-x-auto rounded-lg shadow-lg m-4">
+        <!-- Bande horizontale des événements -->
+        <div class="flex space-x-4 p-4 bg-[#161215] overflow-x-scroll rounded-lg">
+          <template x-if="visible.length === 0">
+            <p class="p-4 rounded-lg w-full text-center" x-text="source === 'favorites' ? 'No favourite events yet.' : 'No events to show.'"></p>
+          </template>
+          <template x-for="event in visible" :key="event.id">
+            <div
+              class="flex flex-col justify-between bg-[#26232A] border border-[#E5E7EB] p-4 rounded-lg w-64 shadow-md hover:shadow-lg motion-safe:transition-transform motion-safe:hover:scale-105 cursor-pointer flex-shrink-0 gap-0.5"
+              @click="selectedEvent = event; view = 'details'; setTimeout(() => { isOpen = true }, 200)"
+            >
+              <div>
+                <h2 class="text-lg font-heading text-heading leading-tight mb-2" x-text="event.title"></h2>
+              </div>
+              <div>
+                <p class="text-sm text-gray-400" x-text="`Capacity: ${event.players_count ?? 'unlimited'}`"></p>
+                <p class="text-sm" x-text="`Start: ${new Date(event.start_datetime).toLocaleString()}`"></p>
+                <p class="text-sm" x-text="`End: ${new Date(event.end_datetime).toLocaleString()}`"></p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

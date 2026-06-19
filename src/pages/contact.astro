@@ -1,0 +1,404 @@
+---
+import Layout from "../layouts/layout.astro";
+---
+
+<Layout title="Privacy">
+    <!-- Conteneur principal -->
+    <div class="max-w-[900px] mx-auto px-4">
+      <div class="text-center">
+        <!-- Avatar en cercle -->
+        <div class="flex mt-12 justify-center mx-auto mb-6">
+          <div
+            class="rounded-full border-4 border-gray-200 w-32 h-32 flex items-center justify-center"
+          >
+            <img
+              src="img/kw.webp"
+              alt="profile photo"
+              class="rounded-full w-full h-auto"
+            />
+          </div>
+        </div>
+
+        <!-- mon contact -->
+        <div>
+          <h2 class="text-xl mb-2">Contact</h2>
+            <p class="mb-4">
+              <button
+                type="button"
+                popovertarget="contactDPO"
+                class="hover:text-heading transition-colors font-medium cursor-pointer"
+              >
+                josshanel@gmail.com
+              </button>
+            </p>
+        </div>
+      </div>
+
+      <!--Politique de confidentialité-->
+      <section class="my-6 p-6 bg-[#161215] rounded-lg">
+        <h3 class="text-2xl mb-6 font-medium text-heading">Privacy Policy</h3>
+
+        <div class="space-y-6 text-sm">
+          <div>
+            <h4 class="text-lg mb-2 font-medium">Introduction</h4>
+            <p>
+              This app is an independent, unofficial project built and run by a single developer.
+              It is not affiliated with, endorsed by, or operated by the Web3 Foundation or the official
+              Web3Summit event organisers.
+            </p>
+            <p class="mt-2">
+              I take your privacy seriously. This policy explains plainly what information I collect,
+              how I use it, and how I protect it.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-lg mb-2 font-medium">Data collected</h4>
+            <p>
+              This app has no backend and no database. There is no server collecting or storing
+              your data — everything below stays on your own device or directly between
+              participants' browsers:
+            </p>
+            <ul class="list-disc list-inside space-y-1 mt-2 ml-4">
+              <li>Your account address and display name, provided automatically by the Polkadot app (Polkadot App, Polkadot Desktop, or Polkadot Web) you're using to open this app, then kept only in your browser's local storage</li>
+              <li>Events you add to favourites, kept only in your browser's local storage</li>
+              <li>Messages you send in an event's chat room, exchanged directly peer-to-peer (WebRTC) with other participants currently in that room</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg mb-2 font-medium">How your data is used</h4>
+            <p>Your data is used exclusively, on your own device, to:</p>
+            <ul class="list-disc list-inside space-y-1 mt-2 ml-4">
+              <li>Show your account address and display name without asking you to log in</li>
+              <li>Display the events you have saved as favourites</li>
+              <li>Show your display name to other participants currently in the same chat room</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg mb-2 font-medium">Data protection</h4>
+            <p>There is nothing to protect on a server, because there is no server:</p>
+            <ul class="list-disc list-inside space-y-1 mt-2 ml-4">
+              <li>Your identity is provided automatically by the Polkadot app hosting this app — no password is ever created or transmitted, and there is no separate login step to manage</li>
+              <li>Favourites and your display name live only in your browser's local storage and are erased if you clear your browser data</li>
+              <li>Chat messages travel directly between participants' browsers (peer-to-peer) and are never written to disk anywhere</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg mb-2 font-medium">Data sharing</h4>
+            <p>My approach to your data:</p>
+            <ul class="list-disc list-inside space-y-1 mt-2 ml-4">
+              <li>I do not collect, see, or sell your personal data — I have no server to collect it on</li>
+              <li>Your display name is visible to other participants in the chat rooms you join, peer-to-peer, for as long as you're both connected</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg mb-2 font-medium">Your data, your control</h4>
+            <p>
+              Since this app has no server and no database, there is nothing held about you for me
+              to access, rectify, erase, or hand over on your behalf — I simply don't have it.
+              Your account address, display name, and favourites live only in your own browser's
+              local storage, and you control them directly: clearing your browser data erases all
+              of it instantly. Chat messages are never stored anywhere in the first place.
+            </p>
+            <p class="mt-2">
+              For any other question,
+              <button
+                type="button"
+                popovertarget="contactDPO"
+                class="text-red-600 hover:text-heading transition-colors cursor-pointer"
+              >
+                contact me
+              </button>.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-lg mb-2 font-medium">Retention period</h4>
+            <p>Your data is retained as follows:</p>
+            <ul class="list-disc list-inside space-y-1 mt-2 ml-4">
+              <li>Account address and display name: kept in your browser's local storage until you clear your browser data</li>
+              <li>Favourites: same, kept locally until you clear your browser data</li>
+              <li>Chat messages: never stored anywhere, not even temporarily — they exist only in the open peer-to-peer connection and disappear when you leave the room</li>
+            </ul>
+          </div>
+
+          <div class="mt-8 text-center text-xs">
+            <p>This policy was last updated on 19 June 2026.</p>
+          </div>
+        </div>
+      </section>
+    </div>      
+      <!-- Popup de formulaire de contact -->
+      <div 
+        class="rounded resize max-w-[900px] border border-popupEvent overflow-y-auto" 
+        id="contactDPO" 
+        popover
+      >
+        <div class="flex justify-between align-middle bg-popupEvent">
+          <h2 class="text-left flex-1 pl-2 cursor-move select-none py-1 -translate-y-0.5">
+            <span class="-translate-y-1 mr-1">☎️</span>Contact
+          </h2>
+          <button class="text-xl px-2 select-none" popovertarget="contactDPO">
+            X
+          </button>
+        </div>
+
+        <form 
+          id="formContact" 
+          class="inset-0 w-full rounded max-w-[900px] mx-auto items-center justify-center z-50 px-5 py-2 transition-opacity"
+          action="https://api.web3forms.com/submit" 
+          method="POST"
+        >
+          <!-- Web3Forms Access Key -->
+          <input type="hidden" name="access_key" value="2dcc3f1b-036f-48a7-987a-cdada0d05ae5">
+          
+          <!-- Sujet du message -->
+          <input type="hidden" name="subject" value="GDPR Request - Web3Summit">
+
+          <!-- Conteneur flex pour nom et email -->
+          <div class="flex flex-col md:flex-row gap-4 mb-4">
+            <!-- Nom -->
+            <div class="flex-1">
+              <label for="name" class="block mb-1 text-sm font-medium">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="bg-[#161215] text-text w-full border border-[#4d2d45] rounded px-3 py-2"
+                placeholder="Your name"
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="flex-1">
+              <label for="email" class="block mb-1 text-sm font-medium">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="bg-[#161215] text-text w-full border border-[#4d2d45] rounded px-3 py-2"
+                placeholder="your@email.com"
+              />
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label for="message" class="block mb-1 text-sm font-medium">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="8"
+              class="bg-[#161215] text-text w-full border border-[#4d2d45] flex-1 rounded px-3 py-2 min-h-40 min-w-72"
+              placeholder="Your message regarding your personal data..."
+            ></textarea>
+          </div>
+
+          <!-- Honeypot pour éviter le spam -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+          <!-- Bouton d'envoi avec feedback -->
+          <div>
+            <button
+              type="submit"
+              id="submitButton"
+              class="w-full bg-popupEvent hover:bg-[#532447] text-white px-4 py-2 mt-5 mb-3 rounded transition-colors flex items-center justify-center"
+            >
+              <!-- Contenu du bouton sera géré dynamiquement par TS -->
+              <span id="buttonContent">Send request</span>
+            </button>
+            
+            <!-- Zone de notification -->
+            <div id="formNotification" class="mt-2 rounded px-3 py-2 hidden"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+</Layout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Configuration du popup déplaçable
+    configureDraggablePopup();
+    
+    // Configuration du formulaire
+    configureContactForm();
+  });
+
+  /**
+   * Configure le popup déplaçable
+   */
+  function configureDraggablePopup(): void {
+    const popupMovable = document.getElementById("contactDPO");
+    if (!popupMovable) return;
+    
+    const header = popupMovable.querySelector("h2");
+    if (!header) return;
+    
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    // Gestionnaire pour le début du drag
+    header.addEventListener("mousedown", function(e: MouseEvent) {
+      isDragging = true;
+      startX = e.clientX - offsetX;
+      startY = e.clientY - offsetY;
+      popupMovable.classList.add("grabbing");
+    });
+
+    // Gestionnaire pour le déplacement
+    document.addEventListener("mousemove", function(e: MouseEvent) {
+      if (!isDragging) return;
+      
+      offsetX = e.clientX - startX;
+      offsetY = e.clientY - startY;
+      
+      // Utilisation de `transform` pour un déplacement fluide
+      popupMovable.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+    });
+
+    // Gestionnaire pour la fin du drag
+    document.addEventListener("mouseup", function() {
+      isDragging = false;
+      if (popupMovable) {
+        popupMovable.classList.remove("grabbing");
+      }
+    });
+  }
+
+  /**
+   * Configure le formulaire de contact
+   */
+  function configureContactForm(): void {
+    const form = document.getElementById("formContact") as HTMLFormElement;
+    const submitButton = document.getElementById("submitButton") as HTMLButtonElement;
+    const buttonContent = document.getElementById("buttonContent") as HTMLSpanElement;
+    const notification = document.getElementById("formNotification") as HTMLDivElement;
+    const popupMovable = document.getElementById("contactDPO");
+    
+    if (!form || !submitButton || !buttonContent || !notification) return;
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      // Mise à jour de l'interface pour l'état "envoi en cours"
+      buttonContent.innerHTML = `
+      <div class="flex gap-2">
+        Sending...
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      <div />
+      `;
+      submitButton.disabled = true;
+      
+      try {
+        const formData = new FormData(form);
+        
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Mise à jour pour l'état "succès"
+          submitButton.classList.remove("bg-popupEvent", "hover:bg-[#532447]");
+          submitButton.classList.add("bg-green-600", "hover:bg-green-700");
+          buttonContent.textContent = "Message sent!";
+
+          notification.textContent = "Your message has been sent successfully.";
+          notification.classList.remove("hidden", "bg-red-100", "text-red-700", "border-red-400");
+          notification.classList.add("bg-green-100", "text-green-700", "border", "border-green-400");
+          
+          // Réinitialiser le formulaire
+          form.reset();
+          
+          // Fermer le popup après un délai
+          setTimeout(() => {
+            if (popupMovable && 'hidePopover' in popupMovable) {
+              (popupMovable as any).hidePopover();
+            }
+            
+            // Réinitialiser le bouton
+            notification.classList.add("hidden");
+          }, 1200);
+          setTimeout(() => {
+            resetButton();
+          }, 1200);
+        } else {
+          handleError("An error occurred while sending the form.");
+        }
+      } catch (error) {
+        handleError("An error occurred while sending the form.");
+        console.error('Error:', error);
+      }
+    });
+    
+    function handleError(message: string): void {
+      // Mise à jour pour l'état "erreur"
+      submitButton.classList.remove("bg-popupEvent", "hover:bg-[#532447]");
+      submitButton.classList.add("bg-red-600", "hover:bg-red-700");
+      buttonContent.textContent = "Failed to send";
+
+      notification.textContent = message;
+      notification.classList.remove("hidden", "bg-green-100", "text-green-700", "border-green-400");
+      notification.classList.add("bg-red-100", "text-red-700", "border", "border-red-400");
+      
+      // Réinitialiser le bouton après un délai
+      setTimeout(() => {
+        resetButton();
+      }, 3000);
+    }
+    
+    function resetButton(): void {
+      submitButton.disabled = false;
+      submitButton.classList.remove("bg-green-600", "hover:bg-green-700", "bg-red-600", "hover:bg-red-700");
+      submitButton.classList.add("bg-popupEvent", "hover:bg-[#532447]");
+      buttonContent.textContent = "Send request";
+    }
+  }
+</script>
+
+<style>
+  #contactDPO {
+    @apply bg-[#5e3554] text-text;
+    opacity: 0;
+    transition:
+      display 0.3s,
+      opacity 0.3s;
+    transition-behavior: allow-discrete;
+    &:popover-open {
+      display: block;
+      opacity: 1;
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+  
+  #formContact {
+    background: linear-gradient(to bottom, #251e23, #121012);
+  }
+  
+  input,
+  textarea {
+    border: 1px solid #4d2d45;
+  }
+  
+  .grabbing {
+    cursor: grabbing;
+  }
+</style>

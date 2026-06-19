@@ -1,0 +1,86 @@
+---
+---
+
+<script>
+  import { joinRoom } from "trystero";
+  window.__trysteroJoinRoom = joinRoom;
+</script>
+
+<div
+  x-data="{
+    room: null,
+    sendMessage: null,
+    messages: [],
+    draft: '',
+    currentRoomId: null,
+    joinRoomFor(eventId) {
+      if (this.currentRoomId === eventId) return;
+      this.leaveRoom();
+      this.currentRoomId = eventId;
+      this.messages = [];
+      this.room = window.__trysteroJoinRoom({ appId: 'web3chathub' }, `event-${eventId}`);
+      const [send, receive] = this.room.makeAction('msg');
+      this.sendMessage = send;
+      receive((data) => { this.messages.push(data); });
+    },
+    leaveRoom() {
+      if (this.room) this.room.leave();
+      this.room = null;
+      this.sendMessage = null;
+      this.currentRoomId = null;
+    },
+    sendDraft(name) {
+      const text = this.draft.trim();
+      if (!text || !this.sendMessage) return;
+      const message = { text, name: name || 'Anonymous' };
+      this.sendMessage(message);
+      this.messages.push(message);
+      this.draft = '';
+    }
+  }"
+  x-init="
+    $watch('view', (value) => {
+      if (value === 'chat' && selectedEvent) joinRoomFor(selectedEvent.id);
+      else leaveRoom();
+    });
+    $watch('isOpen', (open) => { if (!open) leaveRoom(); });
+  "
+  x-show="view === 'chat' && selectedEvent"
+  x-cloak
+  class="flex flex-col h-[600px] p-4"
+>
+  <div class="bg-[#1e1b1f] p-3 rounded-lg shadow-lg mb-2">
+    <h1 class="text-xl font-bold mb-1 text-[#e4e4e4]" x-text="selectedEvent ? selectedEvent.title + ' - Room' : ''"></h1>
+    <p class="text-xs text-gray-400">
+      Ephemeral peer-to-peer chat — no server, no history. Messages only reach people currently in this room.
+    </p>
+  </div>
+
+  <div class="flex-grow overflow-y-auto bg-[#222] p-4 rounded-lg max-h-screen">
+    <ul class="space-y-2 text-gray-300">
+      <template x-for="(message, index) in messages" :key="index">
+        <li><strong x-text="message.name"></strong>: <span x-text="message.text"></span></li>
+      </template>
+    </ul>
+  </div>
+
+  <form @submit.prevent="sendDraft(wallet?.pseudo)" class="flex items-center mt-4 gap-3">
+    <input
+      x-model="draft"
+      autocomplete="off"
+      placeholder="Write your message..."
+      required
+      class="bg-[#161215] border p-3 rounded w-full focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="bg-[#4d2d45] font-bold rounded p-3 transition-colors hover:bg-[#532447]"
+    >
+      Send
+    </button>
+  </form>
+
+  <button @click="leaveRoom(); view = 'details'" class="mt-3 text-sm underline self-start">
+    ← Back to event details
+  </button>
+</div>

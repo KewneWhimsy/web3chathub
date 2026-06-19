@@ -1,0 +1,149 @@
+---
+import "../fonts/fonts.css"; // Importation des polices
+import Footer from "./footer.astro"; // Composant footer rangé dans layout
+import QuickLogin from "../components/quicklogin.astro"; // Popup de connexion par wallet Polkadot, affichée à l'arrivée si non connecté
+import ScriptSpaRouter from "../components/scriptsparouter.astro"; // Routeur client (évite les navigations top-level, cf. sandboxing IPFS)
+
+// Définit une interface TypeScript pour les props.
+interface Props {
+  title: string; //  Spécifie que la propriété title doit être une chaîne de caractères.
+}
+
+const { title } = Astro.props; // Extrait 'title' définit lors de l'utilisation du composant.
+---
+
+<!doctype html>
+<!-- initialisation des données globales d'alpine -->
+<html
+  x-data="{
+  wallet: JSON.parse(localStorage.getItem('wallet') || 'null'),
+
+  // Une seule source de vérité : connecté = un wallet est mémorisé
+  get connected() { return this.wallet !== null },
+
+  setWallet(newWallet) {
+    this.wallet = newWallet;
+    if (newWallet) {
+      localStorage.setItem('wallet', JSON.stringify(newWallet));
+    } else {
+      localStorage.removeItem('wallet');
+    }
+  }
+}"
+  x-init="
+    window.addEventListener('wallet-connected', (event) => {
+      setWallet(event.detail);
+    });
+  "
+  lang="en"
+>
+  <head>
+    <!-- Encodage des caractères pour le document -->
+    <meta charset="UTF-8" />
+    <!-- Fournit une description du site pour les moteurs de recherche -->
+    <meta name="description" content="Web3Summit — web3 &amp; privacy events, Berlin 2026" />
+    <!-- adapte la largeur de la page à celle de l'écran, force le zoom initial à 100% -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Indique le générateur du site (Astro) -->
+    <meta name="generator" content={Astro.generator} />
+    <!-- Définit le titre de la page par une valeur à lui donner quand on utilise ce composant (Props)-->
+    <title>{title}</title>
+
+    <!-- Store des favoris (localStorage, pas de backend) : doit être enregistré avant le démarrage
+    d'Alpine, donc avant alpine.min.js, via l'événement alpine:init -->
+    <script is:inline>
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("favorites", {
+          ids: JSON.parse(localStorage.getItem("favoriteEvents") || "[]"),
+          has(id) {
+            return this.ids.includes(id);
+          },
+          toggle(id) {
+            this.ids = this.has(id)
+              ? this.ids.filter((i) => i !== id)
+              : [...this.ids, id];
+            localStorage.setItem("favoriteEvents", JSON.stringify(this.ids));
+          },
+        });
+      });
+    </script>
+
+    <!-- Charge Alpine.js pour l'interactivité (self-hosted, évite le proxy CDN de la plateforme de publication) -->
+    <script defer src="/js/alpine.min.js"></script>
+
+    <!-- Intercepte les clics sur les liens internes et échange #chatcontain via fetch (pas de navigation top-level) -->
+    <ScriptSpaRouter />
+
+    <!-- Styles globaux, initialisation supplémentaire à l'initialisation faite par tailwind -->
+    <style is:global>
+      :root {
+        --primary-color: #d00000a6;
+        --secondary-color: #1f191d;
+      }
+      body {
+        background: linear-gradient(to bottom, #251e23, #121012);
+        @apply text-text font-body min-h-screen flex-1;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        @apply text-balance;
+      }
+      /* personalisation de la scrollbar */
+      ::-webkit-scrollbar {
+        height: 1rem;
+        /* height of horizontal scrollbar */
+        width: 1rem;
+        /* width of vertical scrollbar */
+      }
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: var(--primary-color);
+      }
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+      }
+      /* Scrollbar corner */
+      ::-webkit-scrollbar-corner {
+        background: var(--primary-color);
+      }
+      /* GOOGLE CHROME */
+      * {
+        scrollbar-width: auto;
+        scrollbar-color: var(--primary-color) var(--secondary-color);
+      }
+      /* Browsers without `::-webkit-scrollbar-*` support */
+      @supports (not selector(::-webkit-scrollbar)) {
+        * {
+          scrollbar-width: auto;
+          scrollbar-color: var(--primary-color) var(--secondary-color);
+        }
+      }
+
+      /* API view transition CSS */
+      @view-transition {
+        navigation: auto; /* enabled! */
+      }
+
+      /* Attribut qui Cache l'élément jusqu'à l'initialisation d'Alpine */
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <QuickLogin />
+    <div class="contents" id="chatcontain">
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

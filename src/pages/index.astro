@@ -1,0 +1,79 @@
+---
+import Layout from "../layouts/layout.astro";
+import EventTimeline from "../components/eventtimeline.astro";
+import PopupEvent from "../components/popupevent.astro";
+---
+
+<Layout title="Web3Summit">
+
+  <!-- Présentation -->
+  <div class="text-center mt-6 mb-12 mx-auto max-w-[900px]">
+    <h1 class="text-3xl text-heading font-hero">Let's build a freer web.</h1>
+    <p class="my-4 mx-3 text-lg text-pretty">
+      Browse the programme and chat live with other participants in each session's room —
+      peer-to-peer, no server in between, identified automatically by the Polkadot app you're using.
+    </p>
+    <p class="mt-2 mx-3 text-sm text-gray-400 text-pretty">
+      Unofficial companion app for Web3Summit Berlin 2026, independent and not affiliated with the
+      Web3 Foundation or the official organisers — see the
+      <a
+        href="https://coda.io/@manon-roux/web3-summit-2026-18-19-june"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-red-600 hover:text-heading transition-colors underline"
+      >official CODA platform</a> for the official programme.
+    </p>
+  </div>
+
+  <!-- Agenda complet -->
+  <section class="max-w-[900px] mx-auto">
+    <PopupEvent>
+      <EventTimeline source="all" color="red-700" colorHover="red-800" />
+    </PopupEvent>
+  </section>
+
+  <!-- Mes événements favoris (tout utilisateur connecté) -->
+  <section
+    x-show="connected"
+    x-cloak
+    class="max-w-[900px] mx-auto mt-12 px-4"
+  >
+    <PopupEvent>
+      <h2 class="text-2xl font-semibold mb-2 ml-2 select-none">Subscribed events</h2>
+      <EventTimeline color="red-700" colorHover="red-800" />
+    </PopupEvent>
+  </section>
+
+  <!-- Horaires des navettes -->
+  <section class="max-w-[900px] mx-auto mt-12 mb-12 px-4">
+    <h2 class="text-2xl text-heading font-heading text-center mb-4">Shuttle bus schedule</h2>
+    <p class="text-center text-sm mb-6">
+      Thursday June 18 &amp; Friday June 19, 2026 — Free for all ticket holders<br/>
+      Hilton Hampton East Side Gallery Hotel → Ostkreuz S-Bahn Station → Funkhaus Berlin
+    </p>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="bg-[#161215] rounded-lg shadow-lg p-4">
+        <h3 class="font-heading text-heading mb-2">To Funkhaus (from hotel)</h3>
+        <p class="text-sm leading-relaxed">
+          8:30, 9:30, 10:30, 11:30, 12:30, 14:15, 15:15, 16:15, 18:00, 19:00, 20:00, 21:00
+        </p>
+      </div>
+      <div class="bg-[#161215] rounded-lg shadow-lg p-4">
+        <h3 class="font-heading text-heading mb-2">From Funkhaus (to hotel)</h3>
+        <p class="text-sm leading-relaxed">
+          9:00, 10:00, 11:00, 12:00, 13:45, 14:45, 15:45, 16:45, 18:30, 19:30, 20:30, 21:30
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-popupEvent rounded-lg shadow-lg p-4 mt-4">
+      <h3 class="font-heading text-heading mb-2">Friday June 19 — Afterparty extension (until 1:30am)</h3>
+      <p class="text-sm leading-relaxed">
+        To Funkhaus (from hotel): 22:00, 23:45, 00:45<br/>
+        From Funkhaus (to hotel): 22:30, 00:15, 01:15
+      </p>
+    </div>
+  </section>
+
+</Layout>

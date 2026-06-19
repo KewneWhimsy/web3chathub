@@ -1,0 +1,64 @@
+---
+---
+
+<script>
+  import { SignerManager } from "@parity/product-sdk-signer";
+
+  // Ce Product tourne dans un Host Polkadot (dot.li / Polkadot Desktop / Polkadot App) qui
+  // connaît déjà l'utilisateur : on récupère son compte automatiquement, sans bouton "Connect".
+  async function connectProductAccount() {
+    const manager = new SignerManager({ ss58Prefix: 0, dappName: "web3chathub" });
+
+    let result = await manager.connect();
+    if (!result.ok) {
+      // Hors d'un Host (ex: npm run dev en local sans Polkadot Desktop) : comptes de dev,
+      // pour pouvoir tester sans avoir besoin du Host réel.
+      console.warn("Host Polkadot indisponible, bascule sur les comptes de dev :", result.error?.message);
+      result = await manager.connect("dev");
+    }
+
+    if (!result.ok || result.value.length === 0) {
+      window.dispatchEvent(new CustomEvent("wallet-connect-failed", {
+        detail: result.ok ? "No account available" : result.error?.message,
+      }));
+      return;
+    }
+
+    const account = result.value[0];
+    manager.selectAccount(account.address);
+
+    window.dispatchEvent(new CustomEvent("wallet-connected", {
+      detail: {
+        address: account.address,
+        pseudo: account.name || `${account.address.slice(0, 6)}…${account.address.slice(-4)}`,
+      },
+    }));
+  }
+
+  connectProductAccount();
+</script>
+
+<div
+  x-data="{ failed: false }"
+  x-init="window.addEventListener('wallet-connect-failed', () => { failed = true })"
+>
+  <!-- Identité connectée automatiquement, remplace le header -->
+  <div
+    x-show="connected"
+    x-cloak
+    x-transition.opacity
+    class="fixed top-2 right-2 z-40 flex items-center gap-2 bg-[#1f191d] rounded-full pl-3 pr-3 py-1 text-sm shadow-lg select-none"
+  >
+    <span x-text="wallet ? `👤 ${wallet.pseudo}` : ''"></span>
+  </div>
+
+  <!-- Échec : ce Product n'est pas chargé dans un Host Polkadot -->
+  <div
+    x-show="!connected && failed"
+    x-cloak
+    x-transition.opacity
+    class="fixed top-2 right-2 z-40 max-w-xs bg-[#1f191d] rounded-lg px-3 py-2 text-sm shadow-lg"
+  >
+    Open this app through dot.li or the Polkadot App to join automatically.
+  </div>
+</div>
