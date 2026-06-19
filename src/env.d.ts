@@ -6,5 +6,9 @@
 // de "declare global", qui ne s'applique qu'à l'intérieur d'un module).
 interface Window {
   htmx: any; // utilisé par scriptsparouter.astro si présent, sinon ignoré
-  __trysteroJoinRoom: typeof import("trystero").joinRoom;
+  __getChatClient: () => Promise<
+    InstanceType<
+      typeof import("@parity/product-sdk-statement-store").StatementStoreClient
+    >
+  >;
 }

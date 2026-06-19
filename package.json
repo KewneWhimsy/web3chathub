@@ -13,11 +13,11 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/tailwind": "^5.1.2",
     "@parity/product-sdk-signer": "^0.8.3",
+    "@parity/product-sdk-statement-store": "^0.4.10",
     "alpinejs": "^3.14.3",
     "astro": "^4.16.10",
     "polkadot-api": "^2.1.6",
     "tailwindcss": "^3.4.14",
-    "trystero": "^0.25.2",
     "typescript": "^5.6.3"
   },
   "overrides": {

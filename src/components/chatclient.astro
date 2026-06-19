@@ -1,0 +1,40 @@
+---
+---
+
+<script>
+  // Connexion partagée au Statement Store (lobby + rooms d'événement utilisent
+  // toutes deux ce singleton, pour ne pas ouvrir plusieurs connexions Host).
+  //
+  // Le chat utilisait Trystero (WebRTC + signalisation externe), mais un Product
+  // tourne dans un sandbox qui ne peut pas atteindre le réseau hors permissions
+  // déclarées (Microphone / ExternalRequest / ChainSubmit) — aucune ne couvre du
+  // WebRTC P2P arbitraire. Le Statement Store, routé via l'API du Host, est le
+  // mécanisme officiel pour la messagerie temps réel entre utilisateurs.
+  import { StatementStoreClient } from "@parity/product-sdk-statement-store";
+
+  let clientPromise: ReturnType<typeof connect> | null = null;
+
+  function waitForWallet(): Promise<{ address: string }> {
+    const stored = JSON.parse(localStorage.getItem("wallet") || "null");
+    if (stored) return Promise.resolve(stored);
+    return new Promise((resolve) => {
+      window.addEventListener(
+        "wallet-connected",
+        (event) => resolve((event as CustomEvent).detail),
+        { once: true },
+      );
+    });
+  }
+
+  async function connect() {
+    const wallet = await waitForWallet();
+    const client = new StatementStoreClient({ appName: "web3chathub" });
+    await client.connect({ mode: "host", accountId: [wallet.address, 0] });
+    return client;
+  }
+
+  window.__getChatClient = function getChatClient() {
+    if (!clientPromise) clientPromise = connect();
+    return clientPromise;
+  };
+</script>

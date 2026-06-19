@@ -3,6 +3,7 @@ import "../fonts/fonts.css"; // Importation des polices
 import Footer from "./footer.astro"; // Composant footer rangé dans layout
 import QuickLogin from "../components/quicklogin.astro"; // Popup de connexion par wallet Polkadot, affichée à l'arrivée si non connecté
 import ScriptSpaRouter from "../components/scriptsparouter.astro"; // Routeur client (évite les navigations top-level, cf. sandboxing IPFS)
+import ChatClient from "../components/chatclient.astro"; // Connexion partagée au Statement Store, utilisée par lobbychat et chatroom
 
 // Définit une interface TypeScript pour les props.
 interface Props {
@@ -138,6 +139,7 @@ const { title } = Astro.props; // Extrait 'title' définit lors de l'utilisation
   </head>
 
   <body class="min-h-screen flex flex-col">
+    <ChatClient />
     <QuickLogin />
     <div class="contents" id="chatcontain">
       <main class="flex-1">

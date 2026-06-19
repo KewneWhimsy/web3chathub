@@ -1,40 +1,41 @@
 ---
 ---
 
-<script>
-  import { joinRoom } from "trystero";
-  window.__trysteroJoinRoom = joinRoom;
-</script>
-
 <div
   x-data="{
-    room: null,
-    sendMessage: null,
+    client: null,
+    subscription: null,
+    seen: new Set(),
     messages: [],
     draft: '',
     currentRoomId: null,
-    joinRoomFor(eventId) {
+    async joinRoomFor(eventId) {
       if (this.currentRoomId === eventId) return;
       this.leaveRoom();
       this.currentRoomId = eventId;
       this.messages = [];
-      this.room = window.__trysteroJoinRoom({ appId: 'web3chathub' }, `event-${eventId}`);
-      const action = this.room.makeAction('msg');
-      this.sendMessage = action.send;
-      action.onMessage = (data) => { this.messages.push(data); };
+      this.client = await window.__getChatClient();
+      if (this.currentRoomId !== eventId) return; // room changed while connecting
+      this.subscription = this.client.subscribe((statement) => {
+        const message = statement.data;
+        if (this.seen.has(message.id)) return;
+        this.seen.add(message.id);
+        this.messages.push(message);
+      }, { topic2: `event-${eventId}` });
     },
     leaveRoom() {
-      if (this.room) this.room.leave();
-      this.room = null;
-      this.sendMessage = null;
+      if (this.subscription) this.subscription.unsubscribe();
+      this.subscription = null;
+      this.seen = new Set();
       this.currentRoomId = null;
     },
     sendDraft(name) {
       const text = this.draft.trim();
-      if (!text || !this.sendMessage) return;
-      const message = { text, name: name || 'Anonymous' };
-      this.sendMessage(message);
+      if (!text || !this.client || !this.currentRoomId) return;
+      const message = { id: crypto.randomUUID(), text, name: name || 'Anonymous' };
+      this.seen.add(message.id);
       this.messages.push(message);
+      this.client.publish(message, { topic2: `event-${this.currentRoomId}` });
       this.draft = '';
     }
   }"
@@ -52,7 +53,7 @@
   <div class="bg-[#1e1b1f] p-3 rounded-lg shadow-lg mb-2">
     <h1 class="text-xl font-bold mb-1 text-[#e4e4e4]" x-text="selectedEvent ? selectedEvent.title + ' - Room' : ''"></h1>
     <p class="text-xs text-gray-400">
-      Ephemeral peer-to-peer chat — no server, no history. Messages only reach people currently in this room.
+      Ephemeral chat over Polkadot's Statement Store — no history. Messages only reach people currently in this room.
     </p>
   </div>
 

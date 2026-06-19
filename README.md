@@ -13,7 +13,7 @@ Unofficial companion app, independent and not affiliated with the Web3 Foundatio
 - **Astro** + **Tailwind CSS** for the static site.
 - **Alpine.js** for all client-side interactivity (no HTMX, no server-rendered fragments).
 - **`@parity/product-sdk-signer`** to resolve the visitor's account automatically from the Polkadot Host running the app — no login form, no password. Falls back to Substrate dev accounts (`connect('dev')`) when run outside a Host, e.g. in local dev.
-- **Trystero** for ephemeral, peer-to-peer event chat rooms (WebRTC, no signaling server to run). Messages are never persisted.
+- **`@parity/product-sdk-statement-store`** for ephemeral event chat rooms, published over Polkadot's Statement Store (gossiped, allowance-gated, no chat history kept past the statement TTL). Raw WebRTC libraries can't reach the network from inside a Polkadot Product's sandbox, so signaling routes through the Host API instead.
 - The event agenda is a static file (`src/data/events.json`); favourites are kept in the browser's `localStorage`.
 
 ### Local development
