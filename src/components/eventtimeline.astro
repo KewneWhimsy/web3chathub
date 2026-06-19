@@ -28,22 +28,6 @@ const { source = "all", color = "red-700", colorHover = "red-800" } = Astro.prop
       }
     }`}
   >
-    <div class="flex flex-col space-y-4 ml-2">
-      <div class="flex gap-2 m-2">
-        <button
-          @click="sortBy = 'start_datetime'"
-          class={`px-2 py-1 transition-colors rounded bg-${color} hover:bg-${colorHover}`}
-        >
-          <p class="text-sm">Sort by date</p>
-        </button>
-        <button
-          @click="sortBy = 'organisateur'"
-          class={`px-2 py-1 transition-colors rounded bg-${color} hover:bg-${colorHover}`}
-        >
-          <p class="text-sm">Sort by organiser</p>
-        </button>
-      </div>
-    </div>
     <div class="flex justify-center">
       <div class="w-full max-w-4xl overflow-x-auto rounded-lg shadow-lg m-4">
         <!-- Bande horizontale des événements -->
