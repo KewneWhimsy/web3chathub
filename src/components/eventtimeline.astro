@@ -44,9 +44,8 @@ const { source = "all", color = "red-700", colorHover = "red-800" } = Astro.prop
                 <h2 class="text-lg font-heading text-heading leading-tight mb-2" x-text="event.title"></h2>
               </div>
               <div>
-                <p class="text-sm text-gray-400" x-text="`Capacity: ${event.players_count ?? 'unlimited'}`"></p>
-                <p class="text-sm" x-text="`Start: ${new Date(event.start_datetime).toLocaleString()}`"></p>
-                <p class="text-sm" x-text="`End: ${new Date(event.end_datetime).toLocaleString()}`"></p>
+                <p class="text-sm text-gray-400" x-text="new Date(event.start_datetime).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })"></p>
+                <p class="text-lg font-semibold" x-text="`${new Date(event.start_datetime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} – ${new Date(event.end_datetime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`"></p>
               </div>
             </div>
           </template>

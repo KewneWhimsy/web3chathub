@@ -1,0 +1,71 @@
+---
+---
+
+<script>
+  import { joinRoom } from "trystero";
+  window.__trysteroJoinRoom = joinRoom;
+  window.dispatchEvent(new CustomEvent("trystero-ready"));
+</script>
+
+<section class="max-w-[900px] mx-auto mt-12 px-4">
+  <h2 class="text-2xl text-heading font-heading text-center mb-4">Lobby chat</h2>
+  <div
+    x-data="{
+      room: null,
+      sendMessage: null,
+      messages: [],
+      draft: '',
+      joinLobby() {
+        if (this.room) return;
+        this.room = window.__trysteroJoinRoom({ appId: 'web3chathub' }, 'lobby');
+        const [send, receive] = this.room.makeAction('msg');
+        this.sendMessage = send;
+        receive((data) => { this.messages.push(data); });
+      },
+      sendDraft(name) {
+        const text = this.draft.trim();
+        if (!text || !this.sendMessage) return;
+        const message = { text, name: name || 'Anonymous' };
+        this.sendMessage(message);
+        this.messages.push(message);
+        this.draft = '';
+      }
+    }"
+    x-init="
+      if (window.__trysteroJoinRoom) { joinLobby() }
+      else { window.addEventListener('trystero-ready', () => joinLobby(), { once: true }) }
+    "
+    class="flex flex-col h-[400px] bg-[#161215] rounded-lg shadow-lg p-4"
+  >
+    <p class="text-xs text-gray-400 mb-2">
+      Ephemeral peer-to-peer chat open to everyone, all the time — no server, no history.
+    </p>
+
+    <div class="flex-grow overflow-y-auto bg-[#222] p-4 rounded-lg">
+      <ul class="space-y-2 text-gray-300">
+        <template x-if="messages.length === 0">
+          <li class="text-gray-500">No messages yet — say hi!</li>
+        </template>
+        <template x-for="(message, index) in messages" :key="index">
+          <li><strong x-text="message.name"></strong>: <span x-text="message.text"></span></li>
+        </template>
+      </ul>
+    </div>
+
+    <form @submit.prevent="sendDraft(wallet?.pseudo)" class="flex items-center mt-4 gap-3">
+      <input
+        x-model="draft"
+        autocomplete="off"
+        placeholder="Write your message..."
+        required
+        class="bg-[#1f191d] border p-3 rounded w-full focus:outline-none"
+      />
+      <button
+        type="submit"
+        class="bg-[#4d2d45] font-bold rounded p-3 transition-colors hover:bg-[#532447]"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</section>

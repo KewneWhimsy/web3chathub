@@ -2,6 +2,7 @@
 import Layout from "../layouts/layout.astro";
 import EventTimeline from "../components/eventtimeline.astro";
 import PopupEvent from "../components/popupevent.astro";
+import LobbyChat from "../components/lobbychat.astro";
 ---
 
 <Layout title="Web3Summit">
@@ -39,9 +40,12 @@ import PopupEvent from "../components/popupevent.astro";
   >
     <PopupEvent>
       <h2 class="text-2xl font-semibold mb-2 ml-2 select-none">Subscribed events</h2>
-      <EventTimeline color="red-700" colorHover="red-800" />
+      <EventTimeline source="favorites" color="red-700" colorHover="red-800" />
     </PopupEvent>
   </section>
+
+  <!-- Salon de discussion permanent, accessible sans dépendre d'un événement -->
+  <LobbyChat />
 
   <!-- Horaires des navettes -->
   <section class="max-w-[900px] mx-auto mt-12 mb-12 px-4">

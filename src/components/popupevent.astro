@@ -46,10 +46,9 @@ import Chatroom from "./chatroom.astro";
         <div class="border border-gray-300 p-6 rounded-lg shadow-lg w-full">
           <h2 class="text-2xl font-bold mb-4 font-heading text-heading leading-tight" x-text="selectedEvent.title"></h2>
           <p class="mb-4" x-text="selectedEvent.description"></p>
-          <p><strong>Capacity:</strong> <span x-text="selectedEvent.players_count ?? 'Unlimited'"></span></p>
           <p><strong>Organizer:</strong> <span x-text="selectedEvent.organisateur"></span></p>
-          <p><strong>Start:</strong> <span x-text="new Date(selectedEvent.start_datetime).toLocaleString()"></span></p>
-          <p><strong>End:</strong> <span x-text="new Date(selectedEvent.end_datetime).toLocaleString()"></span></p>
+          <p><strong>Date:</strong> <span x-text="new Date(selectedEvent.start_datetime).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })"></span></p>
+          <p><strong>Time:</strong> <span x-text="`${new Date(selectedEvent.start_datetime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} – ${new Date(selectedEvent.end_datetime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`"></span></p>
 
           <div class="flex justify-between mt-10">
             <div x-show="connected">
