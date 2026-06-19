@@ -12,7 +12,12 @@
       draft: '',
       async joinLobby() {
         if (this.client) return;
-        this.client = await window.__getChatClient();
+        try {
+          this.client = await window.__getChatClient();
+        } catch (error) {
+          console.error('Lobby chat connection failed', error);
+          return;
+        }
         this.subscription = this.client.subscribe((statement) => {
           const message = statement.data;
           if (this.seen.has(message.id)) return;
@@ -30,7 +35,10 @@
         this.draft = '';
       }
     }"
-    x-init="joinLobby()"
+    x-init="
+      $watch('connected', (value) => { if (value) joinLobby() });
+      if (connected) joinLobby();
+    "
     class="flex flex-col h-[400px] bg-[#161215] rounded-lg shadow-lg p-4"
   >
     <p class="text-xs text-gray-400 mb-2">

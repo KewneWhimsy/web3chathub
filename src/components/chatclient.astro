@@ -34,7 +34,12 @@
   }
 
   window.__getChatClient = function getChatClient() {
-    if (!clientPromise) clientPromise = connect();
+    if (!clientPromise) {
+      clientPromise = connect().catch((error) => {
+        clientPromise = null; // permet de retenter (ex: appelé trop tôt, avant que le host soit prêt)
+        throw error;
+      });
+    }
     return clientPromise;
   };
 </script>
