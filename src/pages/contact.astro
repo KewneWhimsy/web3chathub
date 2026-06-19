@@ -5,6 +5,11 @@ import Layout from "../layouts/layout.astro";
 <Layout title="Privacy">
     <!-- Conteneur principal -->
     <div class="max-w-[900px] mx-auto px-4">
+      <!-- Lien retour à l'accueil -->
+      <div class="pt-6">
+        <a href="/" class="text-sm text-gray-500 hover:text-heading transition-colors">← Back to home</a>
+      </div>
+
       <div class="text-center">
         <!-- Avatar en cercle -->
         <div class="flex mt-12 justify-center mx-auto mb-6">
@@ -21,16 +26,25 @@ import Layout from "../layouts/layout.astro";
 
         <!-- mon contact -->
         <div>
-          <h2 class="text-xl mb-2">Contact</h2>
-            <p class="mb-4">
-              <button
-                type="button"
-                popovertarget="contactDPO"
-                class="hover:text-heading transition-colors font-medium cursor-pointer"
-              >
-                josshanel@gmail.com
-              </button>
-            </p>
+          <p class="mb-2">
+            <a
+              href="https://jkw.ovh"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-medium hover:text-heading transition-colors"
+            >
+              Portfolio
+            </a>
+          </p>
+          <p class="mb-4">
+            <button
+              type="button"
+              popovertarget="contactDPO"
+              class="text-heading underline hover:text-red-600 transition-colors font-medium cursor-pointer"
+            >
+              Contact
+            </button>
+          </p>
         </div>
       </div>
 

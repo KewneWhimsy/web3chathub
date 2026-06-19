@@ -18,9 +18,9 @@
       joinLobby() {
         if (this.room) return;
         this.room = window.__trysteroJoinRoom({ appId: 'web3chathub' }, 'lobby');
-        const [send, receive] = this.room.makeAction('msg');
-        this.sendMessage = send;
-        receive((data) => { this.messages.push(data); });
+        const action = this.room.makeAction('msg');
+        this.sendMessage = action.send;
+        action.onMessage = (data) => { this.messages.push(data); };
       },
       sendDraft(name) {
         const text = this.draft.trim();

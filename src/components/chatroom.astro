@@ -19,9 +19,9 @@
       this.currentRoomId = eventId;
       this.messages = [];
       this.room = window.__trysteroJoinRoom({ appId: 'web3chathub' }, `event-${eventId}`);
-      const [send, receive] = this.room.makeAction('msg');
-      this.sendMessage = send;
-      receive((data) => { this.messages.push(data); });
+      const action = this.room.makeAction('msg');
+      this.sendMessage = action.send;
+      action.onMessage = (data) => { this.messages.push(data); };
     },
     leaveRoom() {
       if (this.room) this.room.leave();
